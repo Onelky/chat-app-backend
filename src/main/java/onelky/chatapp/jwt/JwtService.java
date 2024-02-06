@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Service
 public class JwtService implements IJwtService{
-    private static final String SECRET_KEY = "QV9TRUNSRVRfS0VZ";
+    private static final String SECRET_KEY = "S8CaMfJ5xbRzwbMi3jdYTtrgexrhvp0Q6WX4tvvZxho";
     @Override
     public String getToken(User user) {
         return getToken(new HashMap<>(), user);

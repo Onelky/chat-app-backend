@@ -30,8 +30,8 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     Provider provider;
 
+    @Column
     String photoUrl;
-    String halt;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
