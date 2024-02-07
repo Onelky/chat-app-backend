@@ -1,4 +1,4 @@
-package onelky.chatapp.entities.user;
+package onelky.chatapp.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

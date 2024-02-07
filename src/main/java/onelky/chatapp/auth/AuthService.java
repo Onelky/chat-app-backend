@@ -1,9 +1,9 @@
 package onelky.chatapp.auth;
 
 import lombok.RequiredArgsConstructor;
-import onelky.chatapp.entities.user.Provider;
-import onelky.chatapp.entities.user.User;
-import onelky.chatapp.entities.user.UserRepository;
+import onelky.chatapp.user.Provider;
+import onelky.chatapp.user.User;
+import onelky.chatapp.user.UserRepository;
 import onelky.chatapp.jwt.IJwtService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

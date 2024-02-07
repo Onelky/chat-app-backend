@@ -1,6 +1,6 @@
 package onelky.chatapp.jwt;
 
-import onelky.chatapp.entities.user.User;
+import onelky.chatapp.user.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public interface IJwtService {
