@@ -1,7 +1,7 @@
 package onelky.chatapp.config;
 
 import lombok.RequiredArgsConstructor;
-import onelky.chatapp.entities.user.UserRepository;
+import onelky.chatapp.user.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

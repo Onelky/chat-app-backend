@@ -1,4 +1,4 @@
-package onelky.chatapp.entities.user;
+package onelky.chatapp.user;
 
 public enum Provider {
     LOCAL,

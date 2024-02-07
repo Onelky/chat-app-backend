@@ -1,9 +1,9 @@
 package onelky.chatapp.auth;
 
 import lombok.RequiredArgsConstructor;
-import onelky.chatapp.entities.user.Provider;
-import onelky.chatapp.entities.user.User;
-import onelky.chatapp.entities.user.UserRepository;
+import onelky.chatapp.user.Provider;
+import onelky.chatapp.user.User;
+import onelky.chatapp.user.UserRepository;
 import onelky.chatapp.jwt.IJwtService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,7 +21,12 @@ public class AuthService {
     public AuthResponse login(LoginRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         User user = userRepository.findByUsername(request.getUsername()).orElseThrow();
-        return AuthResponse.builder().token(jwtService.getToken(user)).build();
+
+        return AuthResponse
+                .builder()
+                .token(jwtService.getToken(user))
+                .user(UserResponse.convertUserToUserResponse(user))
+                .build();
     }
 
     public AuthResponse register(RegisterRequest request) {
@@ -32,6 +37,10 @@ public class AuthService {
                 .provider(Provider.LOCAL)
                 .build();
         userRepository.save(user);
-        return AuthResponse.builder().token(jwtService.getToken(user)).build();
+        return AuthResponse
+                .builder()
+                .token(jwtService.getToken(user))
+                .user(UserResponse.convertUserToUserResponse(user))
+                .build();
     }
 }
