@@ -31,7 +31,7 @@ public class User implements UserDetails {
     Provider provider;
 
     @Column
-    String photoUrl;
+    String profilePicture;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
