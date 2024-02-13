@@ -1,4 +1,4 @@
-package onelky.chatapp.user;
+package onelky.chatapp.user.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateUserRequest {
+public class UpdateUserResponse {
     String username;
-    String password;
     String email;
     String profilePicture;
 }
