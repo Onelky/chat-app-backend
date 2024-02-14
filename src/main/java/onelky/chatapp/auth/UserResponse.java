@@ -14,7 +14,7 @@ public class UserResponse {
     Integer id;
     String username;
     String email;
-    String photoUrl;
+    String profilePicture;
 
     public static UserResponse convertUserToUserResponse(User user){
         return UserResponse
@@ -22,7 +22,7 @@ public class UserResponse {
                 .id(user.getId())
                 .username(user.getUsername())
                 .email(user.getEmail())
-                .photoUrl(user.getProfilePicture())
+                .profilePicture(user.getProfilePictureUrl())
                 .build();
     }
 }

@@ -31,7 +31,10 @@ public class User implements UserDetails {
     Provider provider;
 
     @Column
-    String profilePicture;
+    String profilePictureUrl;
+
+    @Column
+    String profilePicturePublicId;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

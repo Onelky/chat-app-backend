@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -33,7 +34,7 @@ public class UserService {
         return UpdateUserResponse
                 .builder()
                 .username(existingUser.getUsername())
-                .profilePicture(existingUser.getProfilePicture())
+                .profilePicture(existingUser.getProfilePictureUrl())
                 .email(existingUser.getEmail())
                 .build();
     }
@@ -75,6 +76,8 @@ public class UserService {
     }
 
     private void updateProfilePicture( User existingUser, MultipartFile profilePicture) throws IOException {
-        existingUser.setProfilePicture(cloudinaryService.uploadFile(profilePicture));
+        HashMap<String, String> uploadedPicture = cloudinaryService.uploadFile(profilePicture);
+        existingUser.setProfilePictureUrl(uploadedPicture.get("url"));
+        existingUser.setProfilePicturePublicId(uploadedPicture.get("publicId"));
     }
 }
