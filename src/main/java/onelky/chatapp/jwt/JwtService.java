@@ -19,7 +19,6 @@ import java.util.function.Function;
 public class JwtService implements IJwtService{
     @Value("${api.jwt_secret_key}")
     private String secretKey;
-
     @Override
     public String getToken(User user) {
         return getToken(new HashMap<>(), user);
