@@ -76,7 +76,7 @@ public class UserService {
     }
 
     private void updateProfilePicture( User existingUser, MultipartFile profilePicture) throws IOException {
-        HashMap<String, String> uploadedPicture = cloudinaryService.uploadFile(profilePicture);
+        HashMap<String, String> uploadedPicture = cloudinaryService.uploadFile(profilePicture, existingUser.getProfilePicturePublicId());
         existingUser.setProfilePictureUrl(uploadedPicture.get("url"));
         existingUser.setProfilePicturePublicId(uploadedPicture.get("publicId"));
     }

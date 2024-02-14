@@ -6,5 +6,5 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public interface CloudinaryService {
-    HashMap<String, String> uploadFile(MultipartFile multipartFile) throws IOException;
+    HashMap<String, String> uploadFile(MultipartFile multipartFile, String existingPictureId) throws IOException;
 }

@@ -20,8 +20,13 @@ public class CloudinaryServiceImpl implements CloudinaryService {
     private final Cloudinary cloudinary;
 
 
-    public HashMap<String, String> uploadFile(MultipartFile multipartFile) throws IOException {
-        Map cloudinaryObj = cloudinary
+    public HashMap<String, String> uploadFile(MultipartFile multipartFile, String existingPictureId) throws IOException {
+
+        if (existingPictureId != null) {
+            cloudinary.uploader().destroy(existingPictureId, null);
+        }
+
+        Map<?,?> cloudinaryObj = cloudinary
                 .uploader()
                 .upload(multipartFile.getBytes(), ObjectUtils.asMap(
                         "public_id", UUID.randomUUID().toString(),
