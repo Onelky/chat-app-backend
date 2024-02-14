@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import onelky.chatapp.user.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,8 @@ import java.util.function.Function;
 
 @Service
 public class JwtService implements IJwtService{
-    private static final String SECRET_KEY = "S8CaMfJ5xbRzwbMi3jdYTtrgexrhvp0Q6WX4tvvZxho";
+    @Value("${api.jwt_secret_key}")
+    private String secretKey;
     @Override
     public String getToken(User user) {
         return getToken(new HashMap<>(), user);
@@ -45,7 +47,7 @@ public class JwtService implements IJwtService{
     }
 
     private SecretKey getKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 

@@ -1,12 +1,18 @@
 package onelky.chatapp.user;
 
 import lombok.RequiredArgsConstructor;
+import onelky.chatapp.cloudinary.CloudinaryService;
+import onelky.chatapp.user.models.UpdateUserRequest;
+import onelky.chatapp.user.models.UpdateUserResponse;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -14,21 +20,17 @@ import java.util.Set;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CloudinaryService cloudinaryService;
 
-    public UpdateUserRequest update(int id, UpdateUserRequest updatedUser) {
-        User existingUser =  userRepository.findById(id).orElseThrow();
-        String[] nullProperties = getNullPropertyNames(updatedUser);
+    public UpdateUserResponse update(String username, Optional<UpdateUserRequest> updatedUser, MultipartFile profilePicture) throws IOException {
+        User existingUser =  userRepository.findByUsername(username).orElseThrow();
 
-        if (nullProperties.length == updatedUser.getClass().getDeclaredFields().length) throw new IllegalArgumentException ("Invalid body");
-
-        BeanUtils.copyProperties(updatedUser, existingUser, nullProperties);
-
-        if (updatedUser.getPassword() != null) {
-            existingUser.setPassword(getNewPassword(updatedUser.getPassword()));
-        }
+        updatedUser.ifPresent(updateUserRequest -> updateUserProperties(updateUserRequest, existingUser));
+        if (profilePicture != null) updateProfilePicture(existingUser, profilePicture);
 
         userRepository.save(existingUser);
-        return UpdateUserRequest
+
+        return UpdateUserResponse
                 .builder()
                 .username(existingUser.getUsername())
                 .profilePicture(existingUser.getProfilePicture())
@@ -57,5 +59,22 @@ public class UserService {
 
         return nullFields.toArray(new String[0]);
 
+    }
+
+    private void updateUserProperties(UpdateUserRequest updatedUser, User existingUser){
+        String[] nullProperties = getNullPropertyNames(updatedUser);
+
+        if (nullProperties.length == updatedUser.getClass().getDeclaredFields().length) throw new IllegalArgumentException ("Invalid body");
+
+        BeanUtils.copyProperties(updatedUser, existingUser, nullProperties);
+
+        if (updatedUser.getPassword() != null) {
+            existingUser.setPassword(getNewPassword(updatedUser.getPassword()));
+        }
+
+    }
+
+    private void updateProfilePicture( User existingUser, MultipartFile profilePicture) throws IOException {
+        existingUser.setProfilePicture(cloudinaryService.uploadFile(profilePicture));
     }
 }
