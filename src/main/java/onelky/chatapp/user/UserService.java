@@ -22,8 +22,8 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final CloudinaryService cloudinaryService;
 
-    public UpdateUserResponse update(int id, Optional<UpdateUserRequest> updatedUser, MultipartFile profilePicture) throws IOException {
-        User existingUser =  userRepository.findById(id).orElseThrow();
+    public UpdateUserResponse update(String username, Optional<UpdateUserRequest> updatedUser, MultipartFile profilePicture) throws IOException {
+        User existingUser =  userRepository.findByUsername(username).orElseThrow();
 
         updatedUser.ifPresent(updateUserRequest -> updateUserProperties(updateUserRequest, existingUser));
         if (profilePicture != null) updateProfilePicture(existingUser, profilePicture);
