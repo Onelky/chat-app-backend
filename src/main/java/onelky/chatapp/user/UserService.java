@@ -23,7 +23,7 @@ public class UserService {
     private final CloudinaryService cloudinaryService;
 
     public UpdateUserResponse update(String username, Optional<UpdateUserRequest> updatedUser, MultipartFile profilePicture) throws IOException {
-        User existingUser =  userRepository.findByUsername(username).orElseThrow();
+        User existingUser =  userRepository.findByUsername(username);
 
         updatedUser.ifPresent(updateUserRequest -> updateUserProperties(updateUserRequest, existingUser));
         if (profilePicture != null) updateProfilePicture(existingUser, profilePicture);

@@ -41,7 +41,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         // if username is not found on security context search it on database and save it in context
 
         if (username != null && securityContext.getAuthentication() == null){
-            UserDetails userDetails = userRepository.findByUsername(username).orElseThrow();
+            UserDetails userDetails = userRepository.findByUsername(username);
             if (jwtService.isTokenValid(token, userDetails)){
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
