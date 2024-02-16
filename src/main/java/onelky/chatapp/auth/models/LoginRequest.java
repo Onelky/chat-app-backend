@@ -1,4 +1,4 @@
-package onelky.chatapp.auth;
+package onelky.chatapp.auth.models;
 
 import lombok.*;
 

@@ -1,6 +1,10 @@
 package onelky.chatapp.auth;
 
 import lombok.RequiredArgsConstructor;
+import onelky.chatapp.auth.models.AuthResponse;
+import onelky.chatapp.auth.models.LoginRequest;
+import onelky.chatapp.auth.models.RegisterRequest;
+import onelky.chatapp.auth.models.UserResponse;
 import onelky.chatapp.user.Provider;
 import onelky.chatapp.user.User;
 import onelky.chatapp.user.UserRepository;
