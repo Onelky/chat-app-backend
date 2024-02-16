@@ -1,6 +1,6 @@
 package onelky.chatapp.config;
 
-import onelky.chatapp.common.entities.ErrorResponse;
+import onelky.chatapp.common.models.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
