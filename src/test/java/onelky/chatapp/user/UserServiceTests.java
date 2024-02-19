@@ -9,8 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -34,7 +34,7 @@ public class UserServiceTests {
 
     @Test
     @WithMockUser(username = "test")
-    public void update_returnsUpdatedUser() throws IOException {
+    public void whenUpdateUser_returnsUpdatedUser() throws IOException {
         User user = getMockedUser();
         when(userRepository.findByUsername(Mockito.any(String.class))).thenReturn(user);
         when(authService.isAuthorized("test")).thenReturn(true);
@@ -50,8 +50,8 @@ public class UserServiceTests {
 
     @Test()
     @WithMockUser(username = "test")
-    public void update_throwsResponseStatusException_whenUserIsNotAuthorized() {
-        assertThrows(ResponseStatusException.class, () -> userService.update("test", null, null));
+    public void whenUpdateUserWithInvalidAuthorization_thenThrowsIllegalArgumentException() {
+        assertThrows(AccessDeniedException.class, () -> userService.update("test", Optional.empty(), null));
     }
 
     private User getMockedUser(){

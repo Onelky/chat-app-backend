@@ -33,7 +33,7 @@ class UserRepositoryTests {
 	}
 
 	@Test
-	public void userRepository_save_returnsSavedUser(){
+	public void whenSaveUser_returnsSavedUser(){
 
 		User savedUser =  userRepository.save(user);
 		assertThat(savedUser).isNotNull();
@@ -41,7 +41,7 @@ class UserRepositoryTests {
 	}
 
 	@Test
-	public void userRepository_findByUsername_returnsOneUser(){
+	public void whenFindByUsername_returnsOneUser(){
 
 		User savedUser =  userRepository.save(user);
 		User user = userRepository.findByUsername(savedUser.getUsername());
