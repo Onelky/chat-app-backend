@@ -1,6 +1,9 @@
 package onelky.chatapp.auth;
 
 import lombok.RequiredArgsConstructor;
+import onelky.chatapp.auth.models.AuthResponse;
+import onelky.chatapp.auth.models.LoginRequest;
+import onelky.chatapp.auth.models.RegisterRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
-    private final AuthService authService;
+    private final IAuthService authService;
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request){

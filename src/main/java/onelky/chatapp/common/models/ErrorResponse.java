@@ -1,4 +1,4 @@
-package onelky.chatapp.common.entities;
+package onelky.chatapp.common.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
