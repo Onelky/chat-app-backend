@@ -11,12 +11,13 @@ import onelky.chatapp.user.UserRepository;
 import onelky.chatapp.jwt.IJwtService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class AuthService implements IAuthService {
     private final UserRepository userRepository;
     private final IJwtService jwtService;
     private final AuthenticationManager authenticationManager;
@@ -46,5 +47,10 @@ public class AuthService {
                 .token(jwtService.getToken(user))
                 .user(UserResponse.convertUserToUserResponse(user))
                 .build();
+    }
+
+    public boolean isAuthorized(String username){
+        User loggedUser =  (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return loggedUser.getUsername().equals(username);
     }
 }
