@@ -1,13 +1,17 @@
 package onelky.chatapp.user;
 
 import lombok.RequiredArgsConstructor;
+import onelky.chatapp.auth.IAuthService;
 import onelky.chatapp.cloudinary.CloudinaryService;
 import onelky.chatapp.user.models.UpdateUserRequest;
 import onelky.chatapp.user.models.UpdateUserResponse;
 import org.springframework.beans.BeanUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -22,11 +26,16 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final CloudinaryService cloudinaryService;
+    private final IAuthService authService;
 
     public UpdateUserResponse update(String username, Optional<UpdateUserRequest> updatedUser, MultipartFile profilePicture) throws IOException {
-        User existingUser =  userRepository.findByUsername(username);
 
+        if (updatedUser == null && profilePicture == null)  throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid body");
+        if (!authService.isAuthorized(username)) throw new AccessDeniedException("");
+
+        User existingUser =  userRepository.findByUsername(username);
         updatedUser.ifPresent(updateUserRequest -> updateUserProperties(updateUserRequest, existingUser));
+
         if (profilePicture != null) updateProfilePicture(existingUser, profilePicture);
 
         userRepository.save(existingUser);

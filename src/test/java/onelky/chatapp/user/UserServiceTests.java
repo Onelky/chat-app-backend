@@ -1,19 +1,22 @@
 package onelky.chatapp.user;
 
+import onelky.chatapp.auth.IAuthService;
 import onelky.chatapp.user.models.UpdateUserRequest;
 import onelky.chatapp.user.models.UpdateUserResponse;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -24,19 +27,17 @@ public class UserServiceTests {
     @InjectMocks
     private UserService userService;
 
-    @BeforeEach
-    public void setup() {
-        User user = User.builder()
-                .email("test@gmail.com")
-                .username("test")
-                .provider(Provider.LOCAL)
-                .password("testpassword")
-                .build();
-        when(userRepository.findByUsername(Mockito.any(String.class))).thenReturn(user);
-    }
+    @Mock
+    private IAuthService authService;
+
+
 
     @Test
-    public void userService_update_returnsUpdateUserResponse() throws IOException {
+    @WithMockUser(username = "test")
+    public void update_returnsUpdatedUser() throws IOException {
+        User user = getMockedUser();
+        when(userRepository.findByUsername(Mockito.any(String.class))).thenReturn(user);
+        when(authService.isAuthorized("test")).thenReturn(true);
 
         UpdateUserRequest update = UpdateUserRequest
                 .builder()
@@ -46,4 +47,20 @@ public class UserServiceTests {
         UpdateUserResponse updatedUser = userService.update("test", Optional.ofNullable(update), null);
         assertThat(updatedUser.getEmail()).isEqualTo("newEmail@gmail.com");
     }
+
+    @Test()
+    @WithMockUser(username = "test")
+    public void update_throwsResponseStatusException_whenUserIsNotAuthorized() {
+        assertThrows(ResponseStatusException.class, () -> userService.update("test", null, null));
+    }
+
+    private User getMockedUser(){
+        return User.builder()
+                .email("test@gmail.com")
+                .username("test")
+                .provider(Provider.LOCAL)
+                .password("testpassword")
+                .build();
+    }
+
 }
